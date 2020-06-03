@@ -9,13 +9,11 @@ from time import sleep
 from datetime import datetime
 from datetime import timedelta
 
-## importing socket module
+## get IP address for remote connection
 import socket
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
-## printing the hostname and ip_address
-print(f"Hostname: {hostname}")
-print(f"IP Address: {ip_address}")
+print(f"PyStimulator {version} - IP: {ip_address} ({hostname})")
 
 from PyQt5 import QtGui
 import pyqtgraph as pg
@@ -171,20 +169,6 @@ def stimulate():
 
     listw.append("Overall timing error: %0.2f +/- %0.2f (sd) ms" %(np.mean(mserrlist), np.std(mserrlist)))
     listw.append("Range: %0.2f - %0.2f ms" %(np.min(mserrlist), np.max(mserrlist)))
-##
-##        mserror = millis() - next_switch_time_s*1000;
-##        #print("%s [%2d] t(s):%0.2f %f (%f ms) :%s" %(datetime.now(), \
-##        #    i, next_switch_time_s, millis()/1000, \
-##        #    mserror, format(statecode,'08b')))
-##
-##        mserrlist.append(mserror);
-##
-##        listw.append("%s [%d] t(s):%0.2f" %(datetime.now()-start_time, i, next_switch_time_s))
-##
-##        vert.setValue(next_switch_time_s)
-##        
-##        i += num_repeat
-
 
 
 
@@ -302,7 +286,10 @@ def openFileNameDialog():
         time = np.loadtxt(fileName)
         listw.append(datetime.now().strftime("%Y-%m-%d %H:%M:%S")+": Loaded stimulus file: "+fileName)
     else:
-        time = np.loadtxt('time.txt')
+        try:
+            time = np.loadtxt('time.txt')  # load a default
+        except:
+            time = []
     #output = '{}'.format(time)
     updateDisplay()
     #print(output)
@@ -333,7 +320,6 @@ def clickSave():
 save.clicked.connect(clickSave)
 
 def toggleDark():
-    #darkmode = not darkmode
     darkmode = dark.isChecked()
     if darkmode:
         graph.setBackground(0.0)
