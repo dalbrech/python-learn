@@ -3,9 +3,19 @@
 # pip install PyQt5
 # pip install QDarkStyle
 
+version = '2.0'
+
 from time import sleep
 from datetime import datetime
 from datetime import timedelta
+
+## importing socket module
+import socket
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+## printing the hostname and ip_address
+print(f"Hostname: {hostname}")
+print(f"IP Address: {ip_address}")
 
 from PyQt5 import QtGui
 import pyqtgraph as pg
@@ -37,7 +47,7 @@ app = QtGui.QApplication([])
 
 ## Define a top-level widget to hold everything
 w = QtGui.QWidget()
-w.setWindowTitle('RasPi Stimulus Controller')
+w.setWindowTitle(f"PyStimulator {version} - IP: {ip_address} ({hostname})")
 
 ## Check screen size and maximize if RasPi
 screen = app.primaryScreen()
